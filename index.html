@@ -47,6 +47,11 @@
         #counts {
           font-style: italic;
         }
+        #progressBar {
+            width: 90%;
+            height: 2em;
+            border: 3px solid black;
+        }
         #input-container {
             margin-top: 20px;
         }
@@ -116,7 +121,8 @@
         </div>
         <p id="counts">Class Total: <span id="classTotal"></span>
         <br>
-          Class Goal: 10,000</p>
+          Class Goal: <span id="classGoal">10,000</span></p>
+        <div id="progressBar"></div>
     </div>
     
     <!-- Monarc image -->
@@ -141,6 +147,16 @@
       let script = document.createElement('script');
       script.src = 'https://russian.snow-rentaroren.repl.co/count.js';
       head.appendChild(script);
+
+        // update progress bar
+        const getNumber = spanId => document.getElementById(spanId).innerText.replace(/,/g, '');
+        let current = getNumber('classTotal');
+        let goal = getNumber('classGoal');
+        let percent = Math.floor((100 * current) / goal);
+        if(percent === 0 && current > 0) percent = 0.5;
+        document.getElementById("progressBar").style.background = 
+            'linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(0,255,0,1) '
+          + percent + '%, rgba(0, 0, 0, 0) ' + percent + '%, rgba(0, 0, 0, 0) 100%';
     }
 
     updateClassTotal();
