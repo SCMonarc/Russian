@@ -48,7 +48,6 @@
           font-style: italic;
         }
         #progressBar {
-            width: 90%;
             height: 2em;
             border: 3px solid black;
         }
@@ -142,24 +141,30 @@
       body.appendChild(frame);
     }
 
-    function updateClassTotal() {
-      let head = document.getElementsByTagName('head')[0];
-      let script = document.createElement('script');
-      script.src = 'https://russian.snow-rentaroren.repl.co/count.js';
-      head.appendChild(script);
-
-        // update progress bar
+    function updateProgressBar() {
+        // get current words and goal
         const getNumber = spanId => document.getElementById(spanId).innerText.replace(/,/g, '');
         let current = getNumber('classTotal');
         let goal = getNumber('classGoal');
+        // calculate percent (round to 0.5% if less than 1%)
         let percent = Math.floor((100 * current) / goal);
         if(percent === 0 && current > 0) percent = 0.5;
+        // color in the progress bar
         document.getElementById("progressBar").style.background = 
             'linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(0,255,0,1) '
           + percent + '%, rgba(0, 0, 0, 0) ' + percent + '%, rgba(0, 0, 0, 0) 100%';
     }
 
+    function updateClassTotal() {
+      let head = document.getElementsByTagName('head')[0];
+      let script = document.createElement('script');
+      script.src = 'https://russian.snow-rentaroren.repl.co/count.js';
+      head.appendChild(script);
+      updateProgressBar();
+    }
+
     updateClassTotal();
+    setTimeout(1000, updateProgressBar);
 
     let completedWords = [];
     let currentWordIndex = -1;
